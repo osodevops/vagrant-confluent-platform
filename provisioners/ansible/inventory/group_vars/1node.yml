@@ -1,0 +1,48 @@
+# 1 node Confluent Platform deployment
+# For all configuration variables see: roles/confluent.variables/defaults/main.yml
+all:
+  vars:
+    ansible_connection: ssh
+    ansible_user: root
+    ansible_become: true
+
+    # Security - non-secure
+    ssl_enabled: false
+    ssl_mutual_auth_enabled: false
+    sasl_protocol: none
+
+    health_checks_enabled: false
+
+    confluent:
+      # Disable metrics collection
+      support:
+        metrics_enabled: false
+
+    # For debugging purposes, allow Zookeeper to respond to 4lw commands. Not recommended for production.
+    zookeeper:
+      properties:
+        4lw.commands.whitelist: stat, ruok, conf, isro, cons, dump, crst, envi, srst, srvr, wchc, wchp, mntr
+
+
+# Node configuration
+zookeeper:
+  hosts:
+    cp01:
+kafka_broker:
+  hosts:
+    cp01:
+schema_registry:
+  hosts:
+    cp01:
+control_center:
+  hosts:
+    cp01:
+kafka_connect:
+  hosts:
+    cp01:
+kafka_rest:
+  hosts:
+    cp01:
+ksql:
+  hosts:
+    cp01:
