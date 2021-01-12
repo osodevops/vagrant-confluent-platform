@@ -65,6 +65,8 @@ Vagrant.configure(2) do |config|
       conf.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--cpus", cpu.to_s]
         vb.customize ["modifyvm", :id, "--memory", memory.to_s]
+        #vb.customize ["modifyvm", :id, "--nictrace1", "on"]
+        #vb.customize ["modifyvm", :id, "--nictracefile1", "dump.pcap"]
         vb.name = server[:hostname] + "_" + server[:bridged_ip]
       end
 
@@ -87,6 +89,7 @@ Vagrant.configure(2) do |config|
 
       # PROVISIONERS
       # Create hosts file on all the servers
+      #conf.vm.provision :shell, inline: "export SSLKEYLOGFILE=/home/vagrant/sslkeylogfile"
       conf.vm.provision :shell, inline: "sudo echo #{server[:hostonly_ip]} #{server[:hostname]} | sudo tee -a /etc/hosts"
 
       # Remove 127.0.0.1 <hostname> from /etc/hosts to allow correct IP lookup
