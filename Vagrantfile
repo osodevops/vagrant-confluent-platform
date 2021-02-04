@@ -27,8 +27,6 @@ Vagrant.configure(2) do |config|
   # Configure the servers
   servers.each_with_index do |server, index|
 
-
-
     # Add the cp-ansible template yaml files to the box
     config.vm.provision "file", source: LOCAL_ANSIBLE_PROVISION_DIR, destination: REMOTE_ANSIBLE_PROVISIONING_PATH
 
@@ -94,14 +92,13 @@ Vagrant.configure(2) do |config|
 
       # Remove 127.0.0.1 <hostname> from /etc/hosts to allow correct IP lookup
       conf.vm.provision :shell, inline: "sed -i'' '/^127.0.0.1\\t#{conf.vm.hostname}\\t#{conf.vm.hostname}$/d' /etc/hosts"
-
       conf.vm.provision :shell, :path => "./provisioners/scripts/package_update.sh"
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_epel.sh"
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_python3.sh"
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_centos7_python3_scl.sh"
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_ansible.sh"
+      conf.vm.provision :shell, :path => "./provisioners/scripts/install_clamav.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_confluent_platform.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
-
     end
   end
 end
