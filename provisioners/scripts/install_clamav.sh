@@ -21,3 +21,8 @@ sed -i "s/localhost/$(hostname --fqdn)/g" $INVENTORY_PATH/$TEMPLATE
 cd /home/vagrant/ansible/
 #EQUIV: ansible-playbook -i /home/vagrant/provisioners/ansible/inventory/group_vars/1node.yml playbook.yml
 ansible-playbook -i $INVENTORY_PATH/$TEMPLATE playbook.yml
+
+
+
+
+
