@@ -1,0 +1,93 @@
+---
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: latest
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  become: yes
+
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  become: yes
+
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  become: yes
+
+#- name: Add Docker repo
+#  get_url:
+#    url: https://download.docker.com/linux/centos/docker-ce.repo
+#    dest: /etc/yum.repos.d/docer-ce.repo
+#  become: yes
+#
+#- name: Enable Docker Edge repo
+#  ini_file:
+#    dest: /etc/yum.repos.d/docer-ce.repo
+#    section: 'docker-ce-edge'
+#    option: enabled
+#    value: 0
+#  become: yes
+#
+#- name: Enable Docker Test repo
+#  ini_file:
+#    dest: /etc/yum.repos.d/docer-ce.repo
+#    section: 'docker-ce-test'
+#    option: enabled
+#    value: 0
+#  become: yes
+
+- name: Install Docker
+  package:
+    name: docker
+    state: latest
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+  become: yes
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  become: yes
+
+- name: Ensure the docker group is created
+  group:
+    name: docker
+    state: present
+
+- name: Add user vagrant to docker group
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  become: yes
+
+- name: Install Python3
+  yum:
+    name: python3
+    state: latest
+  vars:
+    ansible_python_interpreter: "/usr/bin/python"
+
+
+#- name: Install pip - the docker module needs pip 2.7 python (do NOT ASK WHY)
+#  package:
+#    name: yum install python27-python-pip
+#    state: latest
+#  become: yes
+
+- name: Install docker package
+  pip:
+    executable: pip3
+    name: docker
+  become: yes

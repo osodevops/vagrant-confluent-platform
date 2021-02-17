@@ -2,8 +2,8 @@
 ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
-RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'username' # RHEL Developer username here
-RHEL_SUBSCRIPTION_MANAGER_PASSWORD = 'password' # RHEL Developer password here
+RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
+RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '0hH2Z8x9db&e' # RHEL Developer password here
 # cp-ansible inventory file to install
 CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
 
@@ -89,8 +89,8 @@ Vagrant.configure(2) do |config|
       conf.vm.provision :shell, :path => "./provisioners/scripts/package_update.sh", env: {"USERNAME"=>RHEL_SUBSCRIPTION_MANAGER_USERNAME, "PASSWORD"=>RHEL_SUBSCRIPTION_MANAGER_PASSWORD}
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_python3.sh"
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_ansible.sh"
-      conf.vm.provision :shell, :path => "./provisioners/scripts/install_clamav.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
-      conf.vm.provision :shell, :path => "./provisioners/scripts/install_confluent_platform.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
+      # conf.vm.provision :shell, :path => "./provisioners/scripts/install_clamav.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
+      # conf.vm.provision :shell, :path => "./provisioners/scripts/install_confluent_platform.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
     end
   end
 end

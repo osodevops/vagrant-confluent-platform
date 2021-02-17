@@ -1,2 +1,2 @@
 #!/bin/sh -eux
-yum -y install rh-python36 rh-python36-pip
+yum -y install rh-python38-python rh-python38-python-pip
