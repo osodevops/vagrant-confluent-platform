@@ -1,0 +1,23 @@
+---
+- name: Create OpenLDAP
+  docker_container:
+    image: osixia/openldap:1.4.0
+    name: openldap
+    restart_policy: always
+    state: started
+    volumes:
+      - /home/vagrant/provisioners/ansible/roles/ldap/files/ldap_users:/container/service/slapd/assets/config/bootstrap/ldif/custom
+    ports:
+      - "389:389"
+      - "636:636"
+    env:
+      LDAP_ORGANISATION: "Confluent"
+      LDAP_DOMAIN: "ps.confluent.io"
+      LDAP_BASE_DN: "dc=ps,dc=confluent,dc=io"
+      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_CONFIG_PASSWORD: "config"
+      KEEP_EXISTING_CONFIG: "false"
+      LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
+      LDAP_SSL_HELPER_PREFIX: "ldap"
+    command: "--copy-service --loglevel debug"
+  become: true
