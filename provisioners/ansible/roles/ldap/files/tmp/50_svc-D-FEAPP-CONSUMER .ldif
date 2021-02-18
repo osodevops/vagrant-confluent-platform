@@ -3,9 +3,9 @@ objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: D-FEAPP-CONSUMER
-sn: Sheen
+sn: D-FEAPP-CONSUMER
 givenName: D-FEAPP-CONSUMER
-cn: urchin
+cn: D-FEAPP-CONSUMER
 displayName: D-FEAPP-CONSUMER
 uidNumber: 10220
 gidNumber: 5000

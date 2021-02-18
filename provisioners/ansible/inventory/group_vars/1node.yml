@@ -50,20 +50,35 @@ kafka_broker:
     kafka_broker_custom_properties:
       ldap.java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
       ldap.com.sun.jndi.ldap.read.timeout: 3000
-      ldap.java.naming.provider.url: ldap://ldap1:389
-      ldap.java.naming.security.principal: uid=mds,OU=rbac,DC=example,DC=com
-      ldap.java.naming.security.credentials: password
+      ldap.java.naming.provider.url: ldap://0.0.0.0:389
+      ldap.java.naming.security.principal: cn=admin,dc=ps,dc=confluent,dc=io
+      ldap.java.naming.security.credentials: admin
       ldap.java.naming.security.authentication: simple
-      ldap.user.search.base: OU=rbac,DC=example,DC=com
-      ldap.group.search.base: OU=rbac,DC=example,DC=com
+      ldap.user.search.base: DC=ps,DC=confluent,DC=io
+      ldap.group.search.base: DC=ps,DC=confluent,DC=io
       ldap.user.name.attribute: uid
-      ldap.user.memberof.attribute.pattern: CN=(.*),OU=rbac,DC=example,DC=com
+      ldap.user.memberof.attribute.pattern: CN=(.*),DC=ps,DC=confluent,DC=io
       ldap.group.name.attribute: cn
-      ldap.group.member.attribute.pattern: CN=(.*),OU=rbac,DC=example,DC=com
+      ldap.group.member.attribute.pattern: CN=(.*),DC=ps,DC=confluent,DC=io
       ldap.user.object.class: account
+
+
+# Node configuration
+zookeeper:
   hosts:
     cp01:
-
 schema_registry:
+  hosts:
+    cp01:
+control_center:
+  hosts:
+    cp01:
+kafka_connect:
+  hosts:
+    cp01:
+kafka_rest:
+  hosts:
+    cp01:
+ksql:
   hosts:
     cp01:
