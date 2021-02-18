@@ -1,8 +1,7 @@
-dn: ou=DFE,{{ LDAP_BASE_DN }}
-objectClass: organizationalUnit
-ou: DFE
-
-dn: ou=Administrators,ou=DEF,{{ LDAP_BASE_DN }}
+dn: ou=Administrators,{{ LDAP_BASE_DN }}
 objectClass: organizationalUnit
 ou: Administrators
 
+dn: ou=DFE,{{ LDAP_BASE_DN }}
+objectClass: organizationalUnit
+ou: DFE

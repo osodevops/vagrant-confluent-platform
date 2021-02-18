@@ -5,30 +5,72 @@ all:
     ansible_connection: ssh
     ansible_user: root
     ansible_become: true
-
-    # Security - non-secure
+    sasl_protocol: plain
+    #### TLS Configuration ####
+    ## By default, data will NOT be encrypted. To turn on TLS encryption, uncomment this line
     ssl_enabled: true
+    ## By default, the components will be configured with One-Way TLS, to turn on TLS mutual auth, uncomment this line:
     ssl_mutual_auth_enabled: false
-    sasl_protocol: none
-    kafka_broker_principal: foobar
-    health_checks_enabled: false
-    rbac_enabled: true
-    url_username: admin
-    url_password: mds_admin
-    mds_port: 8090
-    mds_http_protocol: http
-    mds_super_user: mds
-    mds_super_user_password: mds_password
-    schema_registry_ldap_user: schemaregistryUser
-    schema_registry_ldap_password: schemaregistryUser
-    kafka_connect_ldap_user: connectAdmin
-    kafka_connect_ldap_password: connectAdmin
-    ksql_ldap_user: ksqlDBAdmin
-    ksql_ldap_password: ksqlDBAdmin
-    kafka_rest_ldap_user: restproxyAdmin
-    kafka_rest_ldap_password: restproxyAdmin
-    control_center_ldap_user: controlcenterAdmin
-    control_center_ldap_password: controlcenterAdmin
+    ## By default, the certs for this configuration will be self signed, to deploy custom certificates there are two options.
+    ## Option 1: Custom Certs
+    ## You will need to provide the path to the Certificate Authority Cert used to sign each hosts' certs
+    ## As well as the signed certificate path and the key for that certificate for each host.
+    ## These will need to be set for the correct host
+    # ssl_custom_certs: true
+    # ssl_custom_certs_remote_src: true # set to true if key crt and ca file already on hosts, file paths must still be set
+    # ssl_ca_cert_filepath: "/tmp/certs/ca.crt" # Can be a bundle of ca certs to be included in truststore
+    # ssl_signed_cert_filepath: "/tmp/certs/{{inventory_hostname}}-signed.crt" # Can be a full chain of certs
+    # ssl_key_filepath: "/tmp/certs/{{inventory_hostname}}-key.pem"
+    # ssl_key_password: <password for key for each host, will be inputting in the form -passin pass:{{ssl_key_password}} >
+    # regenerate_keystore_and_truststore: true # Set to true to update certs on hosts. If keystores/truststores exist, they won't be updated without this variable.
+    ## Option 2: Custom Keystores and Truststores
+    ## CP-Ansible can move keystores/truststores to their corresponding hosts and configure the components to use them. Set These vars
+    # ssl_provided_keystore_and_truststore: true
+    # ssl_keystore_filepath: "/tmp/certs/{{inventory_hostname}}-keystore.jks"
+    # ssl_keystore_key_password: mystorepassword
+    # ssl_keystore_store_password: mystorepassword
+    # ssl_keystore_alias: <alias for host specific certificate, only required if multiple certs in provided keystore>
+    # ssl_truststore_filepath: "/tmp/certs/truststore.jks"
+    # ssl_truststore_password: truststorepass
+    # ssl_truststore_ca_cert_alias: <alias to the ca certificate in the truststore eg. CARoot>
+    # Security - non-secure
+
+    #### Zookeeper TLS Configuration ####
+    ## Zookeeper can also have TLS Encryption and mTLS Authentication
+    ## For backwards compatibility both will be turned off by default, even if ssl_enabled is set to true
+    ## To enable TLS encryption and mTLS authentication uncomment these respectively
+    zookeeper_ssl_enabled: true
+    zookeeper_ssl_mutual_auth_enabled: true
+
+    ## JMX Exporter is disabled by default. When enabled, JMX Exporter jar will be pulled from the Internet and enabled on the broker and zookeeper *only*.
+    ## To enable, uncomment this line:
+    jmxexporter_enabled: true
+    ## To update that jar download set this var
+    jmxexporter_jar_url: https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.2/applicationinsights-agent-3.0.2.jar
+    ## To copy from control host instead of downloading from remote URL:
+    # jmxexporter_url_remote: false
+
+
+#    sasl_protocol: none
+#    kafka_broker_principal: foobar
+#    health_checks_enabled: false
+#    rbac_enabled: false
+#    url_username: admin
+#    url_password: mds_admin
+#    mds_port: 8090
+#    mds_http_protocol: http
+#    mds_super_user: mds
+#    mds_super_user_password: mds_password
+#    schema_registry_ldap_user: schemaregistryUser
+#    schema_registry_ldap_password: schemaregistryUser
+#    kafka_connect_ldap_user: connectAdmin
+#    kafka_connect_ldap_password: connectAdmin
+#    ksql_ldap_user: ksqlDBAdmin
+#    ksql_ldap_password: ksqlDBAdmin
+#    kafka_rest_ldap_user: restproxyAdmin
+#    kafka_rest_ldap_password: restproxyAdmin
+#    control_center_ldap_user: controlcenterAdmin
+#    control_center_ldap_password: controlcenterAdmin
 
     confluent:
       # Disable metrics collection
@@ -41,10 +83,6 @@ all:
         4lw.commands.whitelist: stat, ruok, conf, isro, cons, dump, crst, envi, srst, srvr, wchc, wchp, mntr
 
 # Node configuration
-zookeeper:
-  hosts:
-    cp01:
-
 kafka_broker:
   vars:
     kafka_broker_custom_properties:
@@ -61,10 +99,12 @@ kafka_broker:
       ldap.group.name.attribute: cn
       ldap.group.member.attribute.pattern: CN=(.*),DC=ps,DC=confluent,DC=io
       ldap.user.object.class: account
-
+  hosts:
+    cp01:
 
 # Node configuration
 zookeeper:
+  vars:
   hosts:
     cp01:
 schema_registry:
@@ -82,3 +122,4 @@ kafka_rest:
 ksql:
   hosts:
     cp01:
+

@@ -56,13 +56,31 @@ To completely remove the environment, run the following:
 vagrant destroy
 ````
 
-
-
 Vagrant Requirements
 * install the vagrant plugin 'vbguest' `vagrant plugin install vagrant-vbguest --plugin-version 0.21.0`
     * presently later versions of vagrant-vbguest break the ability to install VB Guest additions.
 
 #### Testing LDAP Locally.
-A ldap-docker-compose.yml file can be found in the root of this project for easier local LDAP testing.  After launching the docker-compose, you can access phpLDAPadmin by logging onto http://0.0.0.0:8080, and providing the username 'cn=admin,dc=ps,dc=confluent,dc=io', and the password 'admin'.
+A ldap-docker-compose.yml file can be found in the root of this project for easier local LDAP testing.  After launching the docker-compose, you can access phpLDAPadmin by logging onto http://0.0.0.0:8080, and providing:
+
+* username: 'cn=admin,dc=ps,dc=confluent,dc=io' 
+* password 'admin'.
 
 Alternatively, connectivity can be tested by running 'docker exec -it openldap ldapsearch -x -H ldap://localhost -b "dc=ps,dc=confluent,dc=io" -D "cn=admin,dc=ps,dc=confluent,dc=io" -w admin' from your local terminal.  ** ldapsearch is also installed on the Vagrant machine by default
+
+* username: cn=admin,dc=dead,dc=hq,dc=dept
+* password: admin
+
+DOE LDAP
+It is believed that the DOE LDAP is queried as such: 
+````
+ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" -W
+````
+
+"cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" 
+
+
+** Testing Kafka (run as sudo) 
+# creating topics
+/usr/bin/kafka-topics --create --zookeeper localhost:2182 --replication-factor 1 --partitions 1 --topic test
+docker exec broker kafka-topics --create --topic testtopic --partitions 10 --replication-factor 1 --zookeeper c01:2181

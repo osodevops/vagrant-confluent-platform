@@ -13,7 +13,7 @@ services:
       LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
       LDAP_SSL_HELPER_PREFIX: "ldap"
     volumes:
-      - ./provisioners/ansible/roles/ldap/files/ldap_users:/container/service/slapd/assets/config/bootstrap/ldif/custom
+      - ./provisioners/ansible/roles/ldap/files/ldap_users_doe:/container/service/slapd/assets/config/bootstrap/ldif/custom
     ports:
       - "389:389"
       - "636:636"

@@ -3,4 +3,3 @@ objectClass: top
 objectClass: posixGroup
 cn: testers
 gidNumber: 5002
-

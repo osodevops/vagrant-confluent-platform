@@ -3,7 +3,7 @@ ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
-RHEL_SUBSCRIPTION_MANAGER_PASSWORD = 'password' # RHEL Developer password here
+RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '0hH2Z8x9db&e' # RHEL Developer password here
 # cp-ansible inventory file to install
 CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
 

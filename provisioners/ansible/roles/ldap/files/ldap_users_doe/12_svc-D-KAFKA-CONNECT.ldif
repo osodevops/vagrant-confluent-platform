@@ -1,0 +1,15 @@
+dn: cn=svc-D-KAFKA-CONNECT,ou=Administrators,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: svc-D-KAFKA-CONNECT
+sn: FEAPP
+givenName: svc-D-KAFKA-CONNECT
+cn: urchin
+displayName: svc-D-KAFKA-CONNECT
+uidNumber: 10220
+gidNumber: 5000
+userPassword: AgELTOrm
+gecos: svc-D-KAFKA-C3
+loginShell: /bin/bash
+homeDirectory: /home/svc-D-KAFKA-CONNECT
