@@ -1,0 +1,15 @@
+dn: cn=svc-D-FEAPP-CONSUMER,ou=Administrators,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: svc-D-FEAPP-CONSUMER
+sn: FEAPP
+givenName: svc-D-FEAPP-CONSUMER
+cn: urchin
+displayName: svc-D-FEAPP-CONSUMER
+uidNumber: 10220
+gidNumber: 5000
+userPassword: LIbRarNK
+gecos: svc-D-FEAPP-CONSUMER
+loginShell: /bin/bash
+homeDirectory: /home/svc-D-FEAPP-CONSUMER

@@ -1,0 +1,11 @@
+---
+# Role to deploy pipelines on a given streamsets instance / URL.
+- hosts: localhost
+  connection: local
+  gather_facts: yes
+  become: true
+  user: vagrant
+  vars:
+    ansible_python_interpreter: "/opt/rh/rh-python38/root/bin/python3.8"
+  roles:
+    - ldap
