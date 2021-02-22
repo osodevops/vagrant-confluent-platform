@@ -3,7 +3,7 @@ ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
-RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '0hH2Z8x9db&e' # RHEL Developer password here
+RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
 # cp-ansible inventory file to install
 CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
 
@@ -54,7 +54,7 @@ Vagrant.configure(2) do |config|
 
       # Configure the machine CPU and memory
       cpu = server[:cpu] ? server[:cpu] : 1;
-      memory = server[:ram] ? server[:ram] : 512;
+      memory = 16384;
       conf.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--cpus", cpu.to_s]
         vb.customize ["modifyvm", :id, "--memory", memory.to_s]

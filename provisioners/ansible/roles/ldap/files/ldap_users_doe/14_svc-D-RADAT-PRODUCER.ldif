@@ -1,4 +1,4 @@
-dn: cn=svc-D-RADAT-PRODUCER,ou=Administrators,{{ LDAP_BASE_DN }}
+dn: cn=svc-D-RADAT-PRODUCER,ou=DFE,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
