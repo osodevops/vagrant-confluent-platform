@@ -1,0 +1,15 @@
+dn: cn=svc-D-KAFKA-BROKER,ou=Administrators,{{ LDAP_BASE_DN }}
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: shadowAccount
+uid: svc-D-KAFKA-BROKER
+sn: FEAPP
+givenName: svc-D-KAFKA-BROKER
+cn: urchin
+displayName: svc-D-KAFKA-BROKER
+uidNumber: 10220
+gidNumber: 5000
+userPassword: Tzi23MzN
+gecos: svc-D-KAFKA-BROKER
+loginShell: /bin/bash
+homeDirectory: /home/svc-D-KAFKA-BROKER
