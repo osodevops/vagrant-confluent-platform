@@ -73,7 +73,7 @@ ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=
 Alternatively, connectivity can be tested by running 'docker exec -it openldap ldapsearch -x -H ldap://localhost -b "dc=ps,dc=confluent,dc=io" -D "cn=admin,dc=ps,dc=confluent,dc=io" -w admin' from your local terminal.  ** ldapsearch is also installed on the Vagrant machine by default
 
 * username: cn=admin,dc=dead,dc=hq,dc=dept
-* password: admin
+* password: admin123
 
 DOE LDAP
 It is believed that the DOE LDAP is queried as such: 

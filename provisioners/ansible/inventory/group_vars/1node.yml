@@ -25,6 +25,47 @@ all:
       support:
         metrics_enabled: false
 
+    mds_super_user: admin
+    mds_super_user_password: admin123
+    kafka_broker_ldap_user: admin
+    kafka_broker_ldap_password: admin123
+    schema_registry_ldap_user: admin
+    schema_registry_ldap_password: admin123
+    kafka_connect_ldap_user: admin
+    kafka_connect_ldap_password: admin123
+    ksql_ldap_user: admin
+    ksql_ldap_password: admin123
+    kafka_rest_ldap_user: admin
+    kafka_rest_ldap_password: admin123
+    control_center_ldap_user: admin
+    control_center_ldap_password: admin123
+    sasl_plain_users:
+      admin:
+        principal: admin
+        password: admin123
+      client:
+        principal: admin
+        password: admin123
+      kafka_connect:
+        principal: admin
+        password: admin123
+      control_center:
+        principal: admin
+        password: admin123
+      kafka_rest:
+        principal: admin
+        password: admin123
+      ksql:
+        principal: admin
+        password: admin123
+      schema_registry:
+        principal: admin
+        password: admin123
+      kafka_connect_replicator:
+        principal: admin
+        password: admin123
+
+
     # For debugging purposes, allow Zookeeper to respond to 4lw commands. Not recommended for production.
     zookeeper:
       properties:

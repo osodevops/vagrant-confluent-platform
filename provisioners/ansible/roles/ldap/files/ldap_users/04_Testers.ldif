@@ -1,5 +1,0 @@
-dn: cn=testers,ou=groups,{{ LDAP_BASE_DN }}
-objectClass: top
-objectClass: posixGroup
-cn: testers
-gidNumber: 5002
