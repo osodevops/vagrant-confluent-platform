@@ -85,8 +85,7 @@ ldapsearch -x -b "dc=ps.confluent.io" -H ldap://0.0.0.0 -D "cn=admin,dc=ps,dc=co
 
 
 
- 
-
+/usr/bin/kafka-topics --bootstrap-server cp01:9091  --describe --under-replicated-partitions --command-config /etc/kafka/client.properties
 
 ** Testing Kafka (run as sudo) 
 # creating topics
