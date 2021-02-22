@@ -6,15 +6,15 @@
     restart_policy: always
     state: started
     volumes:
-      - /home/vagrant/provisioners/ansible/roles/ldap/files/ldap_users:/container/service/slapd/assets/config/bootstrap/ldif/custom
+      - /home/vagrant/provisioners/ansible/roles/ldap/files/ldap_users_doe:/container/service/slapd/assets/config/bootstrap/ldif/custom
     ports:
       - "389:389"
       - "636:636"
     env:
       LDAP_ORGANISATION: "Confluent"
-      LDAP_DOMAIN: "ps.confluent.io"
-      LDAP_BASE_DN: "dc=ps,dc=confluent,dc=io"
-      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_DOMAIN: "dead.hq.dept"
+      LDAP_BASE_DN: "dc=dead,dc=hq,dc=dept"
+      LDAP_ADMIN_PASSWORD: "admin123"
       LDAP_CONFIG_PASSWORD: "config"
       KEEP_EXISTING_CONFIG: "false"
       LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"
