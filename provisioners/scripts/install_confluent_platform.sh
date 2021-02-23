@@ -21,8 +21,6 @@ cd /home/vagrant/cp-ansible/
 ansible-playbook -i $INVENTORY_PATH/$TEMPLATE all.yml
 # For local debug, run:
 # ansible-playbook -i /home/vagrant/provisioners/ansible/inventory/group_vars/1node.yml all.yml
-# Install confluent cli
-curl -L https://cnfl.io/cli | sh -s -- -b /usr/local/bin/
 
 # Install confluent-hub
 yum install -q -y confluent-hub-client

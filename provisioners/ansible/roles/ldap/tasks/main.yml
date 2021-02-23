@@ -3,6 +3,7 @@
   docker_container:
     image: osixia/openldap:1.4.0
     name: openldap
+    privileged: yes
     restart_policy: always
     state: started
     volumes:

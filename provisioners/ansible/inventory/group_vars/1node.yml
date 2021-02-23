@@ -6,19 +6,18 @@ all:
     ansible_connection: ssh
     ansible_user: root
     ansible_become: true
-    delete_generation_dir: true
     sasl_protocol: plain
     rbac_enabled: false
     mds_acls_enabled: false
     confluent_cli_download_enabled: true
-    rbac_component_additional_system_admins:
-      - admin
-      - alice
-      - svc-D-RADAT-PRODUCER
-    kafka_broker_additional_system_admins:
-      - admin
-      - alice
-      - svc-D-RADAT-PRODUCER
+#    rbac_component_additional_system_admins:
+#      - admin
+#      - alice
+#      - svc-D-RADAT-PRODUCER
+#    kafka_broker_additional_system_admins:
+#      - admin
+#      - alice
+#      - svc-D-RADAT-PRODUCER
 
     #### TLS Configuration ####
     ## By default, data will NOT be encrypted. To turn on TLS encryption, uncomment this line
@@ -37,10 +36,9 @@ all:
       # Disable metrics collection
       support:
         metrics_enabled: false
-    ksql_health_checks_enabled: false
 
-    mds_super_user: mds
-    mds_super_user_password: password
+    mds_super_user: svc-D-RADAT-PRODUCER
+    mds_super_user_password: admin123
     kafka_broker_ldap_user: kafka_broker
     kafka_broker_ldap_password: password
     schema_registry_ldap_user: schema_registry
@@ -55,7 +53,7 @@ all:
     control_center_ldap_password: password
     sasl_plain_users:
       admin:
-        principal: admin
+        principal: svc-D-RADAT-PRODUCER
         password: admin123
       client:
         principal: admin
@@ -95,7 +93,7 @@ kafka_broker:
       ldap.com.sun.jndi.ldap.read.timeout: 3000
       ldap.java.naming.provider.url: ldap://0.0.0.0:389
       ldap.java.naming.security.principal: uid=svc-D-RADAT-PRODUCER,dc=dead,dc=hq,dc=dept
-      ldap.java.naming.security.credentials: dERvilIn
+      ldap.java.naming.security.credentials: admin123
       ldap.java.naming.security.authentication: simple
       ldap.user.search.base: OU=DFE,DC=dead,DC=hq,DC=dept
       ldap.group.search.base: OU=DFE,DC=dead,DC=hq,DC=dept
@@ -110,7 +108,6 @@ kafka_broker:
 
 # Node configuration
 zookeeper:
-  vars:
   hosts:
     cp01:
 schema_registry:

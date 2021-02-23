@@ -66,6 +66,8 @@ A ldap-docker-compose.yml file can be found in the root of this project for easi
 * username: 'cn=admin,dc=ps,dc=confluent,dc=io' 
 * password 'admin'.
 
+
+ldapsearch -x -b "dc=dead.hq.dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,dc=dead,dc=hq,dc=dept" -W
 ldapsearch -x -b "dc=ps.confluent.io" -H ldap://0.0.0.0 -D "cn=admin,dc=ps,dc=confluent,dc=io" -W
 ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" -W
 
@@ -81,7 +83,16 @@ It is believed that the DOE LDAP is queried as such:
 ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" -W
 ````
 cn=admin,dc=dead,dc=hq,dc=dept
-ldapsearch -x -b "dc=ps.confluent.io" -H ldap://0.0.0.0 -D "cn=admin,dc=ps,dc=confluent,dc=io" -W admin
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,ou=DFE,dc=dead,dc=hq,dc=dept" -W
+ldapsearch -x -b "dc=dead.hq.dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -W
+
+Query LDAP with 'admin' user
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123
+Query LDAP with 'svc' user (presently failing)
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,ou=DFE,dc=dead,dc=hq,dc=dept" -w admin123
+
+
+ou=DFE,dc=dead,dc=hq,dc=dept
 
 
 

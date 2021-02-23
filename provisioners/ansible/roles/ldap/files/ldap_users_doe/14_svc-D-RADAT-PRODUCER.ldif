@@ -3,13 +3,13 @@ objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: svc-D-RADAT-PRODUCER
-sn: FEAPP
+sn: svc-D-RADAT-PRODUCER
 givenName: svc-D-RADAT-PRODUCER
 cn: urchin
 displayName: svc-D-RADAT-PRODUCER
 uidNumber: 10220
 gidNumber: 5000
-userPassword: dERvilIn
+userPassword: admin123
 gecos: svc-D-RADAT-PRODUCER
 loginShell: /bin/bash
 homeDirectory: /home/svc-D-RADAT-PRODUCER
