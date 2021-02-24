@@ -2,82 +2,45 @@
 # For all configuration variables see: roles/confluent.variables/defaults/main.yml
 all:
   vars:
-    health_checks_enabled: false
     ansible_connection: ssh
     ansible_user: root
     ansible_become: true
+    health_checks_enabled: false
     sasl_protocol: plain
-    rbac_enabled: false
-    mds_acls_enabled: false
-    confluent_cli_download_enabled: true
-#    rbac_component_additional_system_admins:
-#      - admin
-#      - alice
-#      - svc-D-RADAT-PRODUCER
-#    kafka_broker_additional_system_admins:
-#      - admin
-#      - alice
-#      - svc-D-RADAT-PRODUCER
-
-    #### TLS Configuration ####
-    ## By default, data will NOT be encrypted. To turn on TLS encryption, uncomment this line
     ssl_enabled: true
-    ## By default, the components will be configured with One-Way TLS, to turn on TLS mutual auth, uncomment this line:
     ssl_mutual_auth_enabled: false
-    zookeeper_ssl_enabled: false
+    rbac_enabled: true
+#    as per: https://docs.confluent.io/ansible/current/ansible-authorize.html
+    mds_super_user: svc-D-KAFKA-C3
+    mds_super_user_password: admin123
+    kafka_broker_ldap_user: svc-D-KAFKA-C3
+    kafka_broker_ldap_password: admin123
+    schema_registry_ldap_user: svc-D-KAFKA-C3
+    schema_registry_ldap_password: admin123
+    kafka_connect_ldap_user: svc-D-KAFKA-C3
+    kafka_connect_ldap_password: admin123
+    ksql_ldap_user: svc-D-KAFKA-C3
+    ksql_ldap_password: admin123
+    kafka_rest_ldap_user: svc-D-KAFKA-C3
+    kafka_rest_ldap_password: admin123
+    control_center_ldap_user: svc-D-KAFKA-C3
+    control_center_ldap_password: admin123
+
+    zookeeper_sasl_protocol: none
+    zookeeper_ssl_enabled: true
     zookeeper_ssl_mutual_auth_enabled: false
 
-    ## JMX Exporter is disabled by default. When enabled, JMX Exporter jar will be pulled from the Internet and enabled on the broker and zookeeper *only*.
-    ## To enable, uncomment this line:
+    confluent_cli_download_enabled: true
     jmxexporter_enabled: true
-    ## To update that jar download set this var
     jmxexporter_jar_url: https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.2/applicationinsights-agent-3.0.2.jar
     confluent:
-      # Disable metrics collection
       support:
         metrics_enabled: false
-
-    mds_super_user: svc-D-RADAT-PRODUCER
-    mds_super_user_password: admin123
-    kafka_broker_ldap_user: kafka_broker
-    kafka_broker_ldap_password: password
-    schema_registry_ldap_user: schema_registry
-    schema_registry_ldap_password: password
-    kafka_connect_ldap_user: connect_worker
-    kafka_connect_ldap_password: password
-    ksql_ldap_user: ksql
-    ksql_ldap_password: password
-    kafka_rest_ldap_user: rest_proxy
-    kafka_rest_ldap_password: password
-    control_center_ldap_user: control_center
-    control_center_ldap_password: password
+#    as per: https://docs.confluent.io/platform/current/security/ldap-authorizer/quickstart.html
     sasl_plain_users:
       admin:
-        principal: svc-D-RADAT-PRODUCER
-        password: admin123
-      client:
         principal: admin
         password: admin123
-      kafka_connect:
-        principal: admin
-        password: admin123
-      control_center:
-        principal: admin
-        password: admin123
-      kafka_rest:
-        principal: admin
-        password: admin123
-      ksql:
-        principal: admin
-        password: admin123
-      schema_registry:
-        principal: admin
-        password: admin123
-      kafka_connect_replicator:
-        principal: admin
-        password: admin123
-
-
 
     # For debugging purposes, allow Zookeeper to respond to 4lw commands. Not recommended for production.
     zookeeper:
@@ -88,21 +51,20 @@ all:
 kafka_broker:
   vars:
     kafka_broker_custom_properties:
-      authorizer.class.name: io.confluent.kafka.security.ldap.authorizer.LdapAuthorizer
+#      authorizer.class.name: io.confluent.kafka.security.ldap.authorizer.LdapAuthorizer
       ldap.java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
       ldap.com.sun.jndi.ldap.read.timeout: 3000
       ldap.java.naming.provider.url: ldap://0.0.0.0:389
-      ldap.java.naming.security.principal: uid=svc-D-RADAT-PRODUCER,dc=dead,dc=hq,dc=dept
+      ldap.java.naming.security.principal: cn=admin,dc=dead,dc=hq,dc=dept
       ldap.java.naming.security.credentials: admin123
       ldap.java.naming.security.authentication: simple
-      ldap.user.search.base: OU=DFE,DC=dead,DC=hq,DC=dept
-      ldap.group.search.base: OU=DFE,DC=dead,DC=hq,DC=dept
-      ldap.user.name.attribute: uid
-      ldap.user.memberof.attribute.pattern: CN=(.*),ou=DFE,DC=dead,DC=hq,DC=dept
-      ldap.group.name.attribute: cn
-      ldap.group.member.attribute.pattern: CN=(.*),ou=DFE,DC=dead,DC=hq,DC=dept
-      ldap.user.object.class: account
-      super.users: User:admin;User:mds;User:superUser;User:ANONYMOUS
+      ldap.user.search.base: ou=DFE,ou=Administrators,dc=dead,dc=hq,dc=dept
+      ldap.search.mode: USERS
+      ldap.user.search.scope: 2
+      ldap.user.name.attribute: cn
+      ldap.user.object.class: inetOrgPerson
+#      super.users: User:admin;User:mds
+
   hosts:
     cp01:
 

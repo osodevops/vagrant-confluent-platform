@@ -1,0 +1,6 @@
+dn: cn=foobar-group,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
+objectClass: top
+objectClass: posixGroup
+cn: foobar-group
+gidNumber: 5000
+

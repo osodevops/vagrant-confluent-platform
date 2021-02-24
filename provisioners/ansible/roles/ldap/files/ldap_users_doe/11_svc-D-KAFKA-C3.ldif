@@ -1,15 +1,15 @@
-dn: cn=svc-D-KAFKA-C3,ou=Administrators,{{ LDAP_BASE_DN }}
+dn: cn=svc-D-KAFKA-C3,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: svc-D-KAFKA-C3
-sn: FEAPP
+sn: svc-D-KAFKA-C3
 givenName: svc-D-KAFKA-C3
-cn: urchin
+cn: svc-D-KAFKA-C3
 displayName: svc-D-KAFKA-C3
-uidNumber: 10220
+uidNumber: 10001
 gidNumber: 5000
-userPassword: StANtiNa
+userPassword: admin123
 gecos: svc-D-KAFKA-C3
 loginShell: /bin/bash
 homeDirectory: /home/svc-D-KAFKA-C3

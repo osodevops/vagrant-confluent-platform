@@ -1,0 +1,34 @@
+dn: cn=foobar-group,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-FEAPP-CONSUMER,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-KAFKA-C3,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-KAFKA-CONNECT,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-FEAPP-SCHREG,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-RADAT-PRODUCER,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-SLD-PRODUCER,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}
+
+dn: cn=foobar-group,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
+changetype: modify
+add: memberuid
+memberuid: cn=svc-D-UKRLP-PRODUCER,ou=DPE,ou=Administrators,{{ LDAP_BASE_DN }}

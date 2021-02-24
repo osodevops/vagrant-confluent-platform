@@ -87,14 +87,17 @@ ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-R
 ldapsearch -x -b "dc=dead.hq.dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -W
 
 Query LDAP with 'admin' user
-ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 filter="(&(objectClass=inetOrgPerson)(objectClass=inetOrgPerson)(uid=admin))"
 Query LDAP with 'svc' user (presently failing)
 ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,ou=DFE,dc=dead,dc=hq,dc=dept" -w admin123
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=inetOrgPerson)(cn=admin))"
+ldapsearch -x -b "dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=simpleSecurityObject)(cn=admin))" 
 
+(objectClass=simpleSecurityObject)(cn=admin))"0
 
-ou=DFE,dc=dead,dc=hq,dc=dept
+ldapsearch -x -b "dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=inetOrgPerson)(cn=svc-D-RADAT-PRODUCER))"
 
-
+curl -k --location --request GET 'https://127.0.0.1:8090/kafka/v3/clusters' --header 'Authorization: Basic bWRzOm1kcy1zZWNyZXQ='
 
 /usr/bin/kafka-topics --bootstrap-server cp01:9091  --describe --under-replicated-partitions --command-config /etc/kafka/client.properties
 

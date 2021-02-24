@@ -2,8 +2,10 @@
 ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
+LOCAL_CP_ANSIBLE_DIR = '../cp-ansible'
+REMOTE_CP_ANSIBLE_DIR = './home/vagrant/cp-ansible'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
-RHEL_SUBSCRIPTION_MANAGER_PASSWORD = 'HkfZ4Jzqgq7' # RHEL Developer password here
+RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
 # cp-ansible inventory file to install
 CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
 
@@ -18,6 +20,7 @@ servers = [
 
 Vagrant.configure(2) do |config|
   config.vm.box = "generic/rhel7"
+  config.vm.network "forwarded_port", guest: 9021, host: 9999
 #   config.vm.box = "roboxes/rhel7"
   if Vagrant.has_plugin?("vagrant-hostmanager")
     config.hostmanager.enabled = true
