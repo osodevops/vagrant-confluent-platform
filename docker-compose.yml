@@ -4,10 +4,10 @@ services:
     image: osixia/openldap:1.4.0
     container_name: openldap
     environment:
-      LDAP_ORGANISATION: "Confluent"
+      LDAP_ORGANISATION: "DeadHQ"
       LDAP_DOMAIN: "dead.hq.dept"
       LDAP_BASE_DN: "dc=dead,dc=hq,dc=dept"
-      LDAP_ADMIN_PASSWORD: "admin"
+      LDAP_ADMIN_PASSWORD: "admin123"
       LDAP_CONFIG_PASSWORD: "config"
       KEEP_EXISTING_CONFIG: "false"
       LDAP_REMOVE_CONFIG_AFTER_SETUP: "true"

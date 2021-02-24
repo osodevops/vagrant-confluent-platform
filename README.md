@@ -66,6 +66,8 @@ A ldap-docker-compose.yml file can be found in the root of this project for easi
 * username: 'cn=admin,dc=ps,dc=confluent,dc=io' 
 * password 'admin'.
 
+
+ldapsearch -x -b "dc=dead.hq.dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,dc=dead,dc=hq,dc=dept" -W
 ldapsearch -x -b "dc=ps.confluent.io" -H ldap://0.0.0.0 -D "cn=admin,dc=ps,dc=confluent,dc=io" -W
 ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" -W
 
@@ -73,7 +75,7 @@ ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=
 Alternatively, connectivity can be tested by running 'docker exec -it openldap ldapsearch -x -H ldap://localhost -b "dc=ps,dc=confluent,dc=io" -D "cn=admin,dc=ps,dc=confluent,dc=io" -w admin' from your local terminal.  ** ldapsearch is also installed on the Vagrant machine by default
 
 * username: cn=admin,dc=dead,dc=hq,dc=dept
-* password: admin
+* password: admin123
 
 DOE LDAP
 It is believed that the DOE LDAP is queried as such: 
@@ -81,12 +83,23 @@ It is believed that the DOE LDAP is queried as such:
 ldapsearch -x -b "dc=dead.hq.dept" -H ldap://172.30.64.20 -D "cn=ADEADMIN307,OU=DFE,OU=Administrators,DC=dead,DC=hq,DC=dept" -W
 ````
 cn=admin,dc=dead,dc=hq,dc=dept
-ldapsearch -x -b "dc=ps.confluent.io" -H ldap://0.0.0.0 -D "cn=admin,dc=ps,dc=confluent,dc=io" -W admin
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,ou=DFE,dc=dead,dc=hq,dc=dept" -W
+ldapsearch -x -b "dc=dead.hq.dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -W
 
+Query LDAP with 'admin' user
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 filter="(&(objectClass=inetOrgPerson)(objectClass=inetOrgPerson)(uid=admin))"
+Query LDAP with 'svc' user (presently failing)
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=svc-D-RADAT-PRODUCER,ou=DFE,dc=dead,dc=hq,dc=dept" -w admin123
+ldapsearch -x -b "ou=DFE,dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=inetOrgPerson)(cn=admin))"
+ldapsearch -x -b "dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=simpleSecurityObject)(cn=admin))" 
 
+(objectClass=simpleSecurityObject)(cn=admin))"0
 
- 
+ldapsearch -x -b "dc=dead,dc=hq,dc=dept" -H ldap://0.0.0.0 -D "cn=admin,dc=dead,dc=hq,dc=dept" -w admin123 "(&(objectClass=inetOrgPerson)(cn=svc-D-RADAT-PRODUCER))"
 
+curl -k --location --request GET 'https://127.0.0.1:8090/kafka/v3/clusters' --header 'Authorization: Basic bWRzOm1kcy1zZWNyZXQ='
+
+/usr/bin/kafka-topics --bootstrap-server cp01:9091  --describe --under-replicated-partitions --command-config /etc/kafka/client.properties
 
 ** Testing Kafka (run as sudo) 
 # creating topics

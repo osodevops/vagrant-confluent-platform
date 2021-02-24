@@ -1,15 +1,15 @@
-dn: cn=svc-D-SLD-PRODUCER,ou=DFE,{{ LDAP_BASE_DN }}
+dn: cn=svc-D-SLD-PRODUCER,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: svc-D-SLD-PRODUCER
-sn: FEAPP
+sn: svc-D-SLD-PRODUCER
 givenName: svc-D-SLD-PRODUCER
-cn: urchin
+cn: svc-D-SLD-PRODUCER
 displayName: svc-D-SLD-PRODUCER
-uidNumber: 10220
+uidNumber: 10006
 gidNumber: 5000
-userPassword: AmpArYME
+userPassword: admin123
 gecos: svc-D-SLD-PRODUCER
 loginShell: /bin/bash
 homeDirectory: /home/svc-D-SLD-PRODUCER

@@ -1,15 +1,15 @@
-dn: cn=svc-D-RADAT-PRODUCER,ou=DFE,{{ LDAP_BASE_DN }}
+dn: cn=svc-D-RADAT-PRODUCER,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: svc-D-RADAT-PRODUCER
-sn: FEAPP
+sn: svc-D-RADAT-PRODUCER
 givenName: svc-D-RADAT-PRODUCER
-cn: urchin
+cn: svc-D-RADAT-PRODUCER
 displayName: svc-D-RADAT-PRODUCER
-uidNumber: 10220
+uidNumber: 10005
 gidNumber: 5000
-userPassword: dERvilIn
+userPassword: admin123
 gecos: svc-D-RADAT-PRODUCER
 loginShell: /bin/bash
 homeDirectory: /home/svc-D-RADAT-PRODUCER

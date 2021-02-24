@@ -1,15 +1,15 @@
-dn: cn=svc-D-KAFKA-SCHREG,ou=Administrators,{{ LDAP_BASE_DN }}
+dn: cn=svc-D-KAFKA-SCHREG,ou=DFE,ou=Administrators,{{ LDAP_BASE_DN }}
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: shadowAccount
 uid: svc-D-KAFKA-SCHREG
-sn: FEAPP
+sn: svc-D-KAFKA-SCHREG
 givenName: svc-D-KAFKA-SCHREG
-cn: urchin
+cn: svc-D-KAFKA-SCHREG
 displayName: svc-D-KAFKA-SCHREG
-uidNumber: 10220
+uidNumber: 10004
 gidNumber: 5000
-userPassword: alatepUT
+userPassword: admin123
 gecos: svc-D-KAFKA-SCHREG
 loginShell: /bin/bash
 homeDirectory: /home/svc-D-KAFKA-SCHREG
