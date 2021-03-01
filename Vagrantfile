@@ -1,7 +1,9 @@
 # absolute path to Ansible directory on virtual machine
 ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
+LOCAL_SCRIPTS_PROVISION_DIR = './provisioners/scripts'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
+REMOTE_SCRIPTS_PROVISIONING_PATH = '/home/vagrant/provisioners/scripts'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
 RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
 # cp-ansible inventory file to install
