@@ -2,6 +2,16 @@
 # For all configuration variables see: roles/confluent.variables/defaults/main.yml
 all:
   vars:
+    environment_id: local-dev
+    application_insights_instrumentation_key: 02e1b132-23f8-490d-a339-2aad9d85633f
+    zookeeper_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    kafka_broker_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    kafka_rest_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    kafka_connect_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    schema_registry_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    ksql_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    control_center_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+
     ansible_connection: ssh
     ansible_user: root
     ansible_become: true
@@ -9,8 +19,8 @@ all:
     sasl_protocol: plain
     ssl_enabled: true
     ssl_mutual_auth_enabled: false
-    rbac_enabled: true
-#    as per: https://docs.confluent.io/ansible/current/ansible-authorize.html
+    rbac_enabled: false
+
     mds_super_user: svc-D-KAFKA-C3
     mds_super_user_password: admin123
     kafka_broker_ldap_user: svc-D-KAFKA-C3
@@ -63,8 +73,6 @@ kafka_broker:
       ldap.user.search.scope: 2
       ldap.user.name.attribute: cn
       ldap.user.object.class: inetOrgPerson
-#      super.users: User:admin;User:mds
-
   hosts:
     cp01:
 

@@ -3,7 +3,7 @@ ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners/ansible'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners/ansible'
 LOCAL_CP_ANSIBLE_DIR = '../cp-ansible'
-REMOTE_CP_ANSIBLE_DIR = './home/vagrant/cp-ansible'
+REMOTE_CP_ANSIBLE_DIR = '/home/vagrant/cp-ansible'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'mccullya' # RHEL Developer username here
 RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
 # cp-ansible inventory file to install
@@ -21,7 +21,6 @@ servers = [
 Vagrant.configure(2) do |config|
   config.vm.box = "generic/rhel7"
   config.vm.network "forwarded_port", guest: 9021, host: 9999
-#   config.vm.box = "roboxes/rhel7"
   if Vagrant.has_plugin?("vagrant-hostmanager")
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = true
@@ -61,14 +60,13 @@ Vagrant.configure(2) do |config|
       conf.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--cpus", cpu.to_s]
         vb.customize ["modifyvm", :id, "--memory", memory.to_s]
-        #vb.customize ["modifyvm", :id, "--nictrace1", "on"]
-        #vb.customize ["modifyvm", :id, "--nictracefile1", "dump.pcap"]
         vb.name = server[:hostname] + "_" + server[:bridged_ip]
       end
 
       # Add the cp-ansible template yaml files to the box
       # Sharing the provisioning scripts to run Ansible locally like Packer.
       conf.vm.synced_folder LOCAL_ANSIBLE_PROVISION_DIR, REMOTE_ANSIBLE_PROVISIONING_PATH
+      conf.vm.synced_folder LOCAL_CP_ANSIBLE_DIR, REMOTE_CP_ANSIBLE_DIR
 
       # Add the private and public key for keyless ssh between the servers
       conf.ssh.private_key_path = ["~/.vagrant.d/insecure_private_key", ssh_key]
