@@ -12,7 +12,7 @@ description: |-
   Add here
 
 # Canonical GitHub repo
-github_repo: osodevops/some-repo
+github_repo: osodevops/vagrant-confluent-platform
 
 # How to use this project
 usage: |-
