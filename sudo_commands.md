@@ -28,7 +28,7 @@ sudo /usr/bin/java/bin/keytool -noprompt -keystore
 sudo openssl pkcs12 -export 
 sudo openssl pkcs12 -export /var/ssl/private/
 sudo keytool -noprompt -keystore /var/ssl/private/zookeeper.truststore.jks
-sudo chown /var/ssl/private/zookeeper.keystore.jks
+sudo chown cp-kafka:confluent /var/ssl/private/zookeeper.keystore.jks
 sudo groupadd confluent 
 sudo useradd zookeeper_user 
 sudo useradd cp-zookeeper 
@@ -38,36 +38,35 @@ sudo useradd cp-kafka-connect
 sudo useradd cp-ksql
 sudo useradd cp-kafka-rest
 sudo useradd cp-control-center
-sudo chown /var/lib/zookeeper
+sudo chown -R cp-kafka:confluent /var/lib/zookeeper
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/zookeeper/templates/ /var/lib/zookeeper/myid
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/zookeeper/templates/ /opt/confluent/etc/kafka/zookeeper.properties
 sudo mkdir /var/log/kafka
-sudo chown /var/log/kafka
-sudo chown /opt/confluent/confluent-7.2.1/etc/kafka
+sudo chown -R cp-kafka:confluent /var/log/kafka
+sudo chown -R cp-kafka:confluent /opt/confluent/confluent-7.2.1/etc/kafka
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/zookeeper/templates/ /opt/confluent/confluent-7.2.1/etc/kafka/zookeeper-log4j.properties
-sudo chown /opt/confluent/confluent-7.2.1/etc/kafka/zookeeper-log4j.properties
+sudo chown cp-kafka:confluent /opt/confluent/confluent-7.2.1/etc/kafka/zookeeper-log4j.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/zookeeper/templates/ /etc/systemd/system/confluent-zookeeper.service.d/override.conf
-sudo chown /etc/systemd/system/confluent-zookeeper.service.d/override.conf
+sudo chown cp-kafka:confluent /etc/systemd/system/confluent-zookeeper.service.d/override.conf
 sudo mkdir -p /etc/systemd/system/confluent-zookeeper.service.d
 sudo systemctl status /etc/systemd/system/confluent-zookeeper.service.d
 sudo systemctl enable service confluent-zookeeper
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-server.service /usr/lib/systemd/system/confluent-server.service
 sudo rm /var/ssl/private/ca.srl
 sudo mkdir -p /var/lib/kafka/data
-sudo chown /var/lib/kafka
-sudo chown /var/lib/kafka/data
+sudo chown -R cp-kafka:confluent /var/lib/kafka
+sudo chown -R cp-kafka:confluent /var/lib/kafka/data
 sudo mkdir -p /opt/confluent/etc/kafka
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_broker/templates/ /opt/confluent/etc/kafka/server.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_broker/templates/ /opt/confluent/etc/kafka/client.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_broker/templates/ /opt/confluent/etc/kafka/zookeeper-tls-client.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_broker/templates/ /opt/confluent/confluent-7.2.1/etc/kafka/log4j.properties
-sudo chown /opt/confluent/confluent-7.2.1/etc/kafka/log4j.properties
+sudo chown cp-kafka:confluent /opt/confluent/confluent-7.2.1/etc/kafka/log4j.properties
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-server.service /etc/systemd/system/confluent-server.service.d
-sudo chown /etc/systemd/system/confluent-server.service.d
+sudo chown -R cp-kafka:confluent /etc/systemd/system/confluent-server.service.d
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_broker/templates/ /etc/systemd/system/confluent-server.service.d/override.conf
-sudo chwon /etc/systemd/system/confluent-server.service.d/override.conf
+sudo chown cp-kafka:confluent /etc/systemd/system/confluent-server.service.d/override.conf
 sudo mkdir -p /usr/lib/sysctl.d 
-sudo vi /usr/lib/sysctl.d 
 sudo sysctl vm.swappiness=1
 sudo sysctl vm.dirty_background_ratio=5sudo service confluent-server start
 sudo sysctl vm.dirty_ratio=80sudo systemctl service confluent-server start
@@ -102,60 +101,59 @@ sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/schema_regist
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/schema_registry/templates/ /opt/confluent/etc/schema-registry/schema-registry.properties
 sudo mkdir -p /var/log/confluent/schema-registry
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/schema-registry/templates/ /opt/confluent/confluent-7.2.1/etc/schema-registry/log4j.properties
-sudo chown /opt/confluent/confluent-7.2.1/etc/schema-registry/log4j.properties
+sudo chown cp-schema-registry:confluent /opt/confluent/confluent-7.2.1/etc/schema-registry/log4j.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/schema-registry/templates/ /etc/systemd/system/confluent-schema-registry.service.d/override.conf
-sudo chwon /etc/systemd/system/confluent-schema-registry.service.d/override.conf
+sudo chown cp-schema-registry:confluent /etc/systemd/system/confluent-schema-registry.service.d/override.conf
 sudo systemd reload schema-registry.service
-sudo mkdir -p /opt/confluent/etc/kafka
-sudo chown /opt/confluent/etc/kafka
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_connect/templates/ /opt/confluent/etc/kafka/connect-distributed.properties
-sudo chown /opt/confluent/etc/kafka/connect-distributed.properties
+sudo chown cp-kafka-connect:confluent /opt/confluent/etc/kafka/connect-distributed.properties
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/ /opt/confluent/confluent-7.2.1/share/java
-sudo chown /opt/confluent/confluent-7.2.1/share/java
-sudo mkdir -p /var/log/kafka
-sudo chown /var/log/kafka
+sudo chown cp-kafka-connect:confluent /opt/confluent/confluent-7.2.1/share/java
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_connect/templates/ /opt/confluent/confluent-7.2.1/etc/kafka/connect-log4j.properties
-sudo cp sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-kafka-connect.service /etc/systemd/system/confluent-kafka-connect.service.d
+sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-kafka-connect.service /etc/systemd/system/confluent-kafka-connect.service.d
 sudo chown /etc/systemd/system/confluent-kafka-connect.service.d
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kafka_connect/templates/ /etc/systemd/system/confluent-kafka-connect.service.d/override.conf
 sudo chown /etc/systemd/system/confluent-kafka-connect.service.d/override.conf
 sudo mkdir -p /var/lib/kafka-streams
-sudo chwon /var/lib/kafka-streams
-sudo cp /var/lib/kafka-streams
+sudo chown cp-ksql:confluent /var/lib/kafka-streams
 sudo mkdir -p /opt/confluent/etc/ksqldb
-sudo chwon /opt/confluent/etc/ksqldb/ksql-server.properties
+sudo chown cp-ksql:confluent /opt/confluent/etc/ksqldb/ksql-server.properties
 sudo mkdir -p /var/log/confluent/ksql
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/ /opt/confluent/confluent-7.2.1/etc/ksqldb
-sudo chwon /opt/confluent/confluent-7.2.1/etc/ksqldb
+sudo chown cp-ksql:confluent /opt/confluent/confluent-7.2.1/etc/ksqldb
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/ksql/templates/ /opt/confluent/confluent-7.2.1/etc/kafka/connect-log4j.properties
-sudo chwon /opt/confluent/confluent-7.2.1/etc/ksqldb/ksqldb-log4j.properties
+sudo chown -R cp-ksql:confluent /opt/confluent/confluent-7.2.1/etc/ksqldb/ksqldb-log4j.properties
 sudo mkdir -p /tmp/ksqldb
-sudo chwon /tmp/ksqldb
-sudo cp /tmp/ksqldb
-sudo cp sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-ksqldb.service /etc/systemd/system/confluent-ksqldb.service.d
+sudo chown -R cp-ksql:confluent /tmp/ksqldb
+sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/confluent-ksqldb.service /etc/systemd/system/confluent-ksqldb.service.d
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/ksql/templates/ /etc/systemd/system/confluent-ksqldb.service.d/override.conf
-sudo chwon /etc/systemd/system/confluent-ksqldb.service.d/override.conf
+sudo chown cp-ksql:confluent /etc/systemd/system/confluent-ksqldb.service.d/override.conf
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/ /opt/confluent/etc/kafka-rest
-sudo chwon /opt/confluent/etc/kafka-rest
+sudo chown cp-kafka-rest:confluent /opt/confluent/etc/kafka-rest
 sudo mkdir -p /opt/confluent/etc/kafka-rest
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kakfa_rest/templates/ /opt/confluent/etc/kafka-rest/kafka-rest.properties
-sudo chown /opt/confluent/etc/kafka-rest/kafka-rest.properties
-sudo chown /var/log/confluent/kafka-rest
+sudo chown cp-kafka-rest:confluent /opt/confluent/etc/kafka-rest/kafka-rest.properties
+sudo chown cp-kafka-rest:confluent /var/log/confluent/kafka-rest
 sudo mkdir -p /var/log/confluent/kafka-rest
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/kakfa_rest/templates/ /opt/confluent/confluent-7.2.1/etc/kafka-rest/log4j.properties
-sudo chwon /opt/confluent/confluent-7.2.1/etc/kafka-rest/log4j.properties
-suso chown cp /home/vagrant/ansible_collections/confluent/platform/roles/kakfa_rest/templates/ /etc/systemd/system/confluent-kafka-rest.service.d/override.conf
-suso chown chwon /etc/systemd/system/confluent-kafka-rest.service.d/override.conf
+sudo chown /opt/confluent/confluent-7.2.1/etc/kafka-rest/log4j.properties
+sudo chown cp /home/vagrant/ansible_collections/confluent/platform/roles/kakfa_rest/templates/ /etc/systemd/system/confluent-kafka-rest.service.d/override.conf
+sudo chown chown /etc/systemd/system/confluent-kafka-rest.service.d/override.conf
 sudo mkdir -p /var/lib/confluent/control-center
-sudo chwon /var/lib/confluent/control-center
-sudo chwon /opt/confluent/etc/confluent-control-center
+sudo chown cp-control-center:confluent /var/lib/confluent/control-center
+sudo chown cp-control-center:confluent /opt/confluent/etc/confluent-control-center
 sudo mkdir -p /opt/confluent/etc/confluent-control-center
+sudo mkdir cp-control-center:confluent /opt/confluent/etc/confluent-control-center
 sudo cp /opt/confluent/confluent-7.2.1/lib/systemd/system/ /opt/confluent/etc/confluent-control-center
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/control_centre/templates/ /opt/confluent/etc/confluent-control-center/control-center-production.properties
-sudo chown /var/log/confluent/
+sudo chown cp-control-center:confluent /var/log/confluent/
+sudo chown cp-control-center:confluent /var/log/confluent/control-center
+sudo chown cp-kafka-rest:confluent /var/log/confluent/kafka-rest
+sudo chown cp-ksql:confluent /var/log/confluent/ksql
+sudo chown cp-schema-registry:confluent /var/log/confluent/schema-registry
 sudo mkdir -p /var/log/confluent/control-center
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/control_centre/templates/ /opt/confluent/confluent-7.2.1/etc/confluent-control-center/log4j-rolling.properties
-sudo chown /opt/confluent/confluent-7.2.1/etc/confluent-control-center/log4j-rolling.properties
+sudo chown cp-control-center:confluent /opt/confluent/confluent-7.2.1/etc/confluent-control-center/log4j-rolling.properties
 sudo cp /home/vagrant/ansible_collections/confluent/platform/roles/control_centre/templates/ /etc/systemd/system/confluent-control-center.service.d/override.conf
 
 ```
