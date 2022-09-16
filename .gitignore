@@ -1,3 +1,4 @@
 .vagrant/
 cp-ansible
 .idea/
+.env
