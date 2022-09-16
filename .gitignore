@@ -1,1 +1,3 @@
 .vagrant/
+cp-ansible
+.idea/
