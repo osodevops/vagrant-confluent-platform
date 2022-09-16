@@ -2,7 +2,7 @@
 ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
 LOCAL_ANSIBLE_PROVISION_DIR = './provisioners'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners'
-LOCAL_CP_ANSIBLE_DIR = '/Users/sionsmith/development/confluent/DoE/cp-ansible'
+LOCAL_CP_ANSIBLE_DIR = './cp-ansible'
 REMOTE_CP_ANSIBLE_DIR = '/home/vagrant/cp-ansible'
 RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'sionsmith' # RHEL Developer username here
 RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
@@ -19,6 +19,7 @@ servers = [
 
 
 Vagrant.configure(2) do |config|
+
   config.vm.box = "generic/rhel8"
   config.vm.network "forwarded_port", guest: 9021, host: 9999
   config.vm.network "forwarded_port", guest: 8080, host: 8080
