@@ -1,11 +1,5 @@
-# absolute path to Ansible directory on virtual machine
 LOCAL_ANSIBLE_PROVISION_DIR = '/home/mccullya/Projects/oso/vagrant-confluent-platform/provisioners'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners'
-# LOCAL_CP_ANSIBLE_DIR = '/home/mccullya/Projects/oso/vagrant-confluent-platform/cp-ansible'
-# REMOTE_CP_ANSIBLE_DIR = '/home/vagrant/cp-ansible'
-# # cp-ansible inventory file to install
-# CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
-
 ssh_key = "~/.ssh/id_rsa"
 
 # List of Confluent servers
@@ -39,27 +33,27 @@ Vagrant.configure(2) do |config|
     config.vm.provision "file", source: LOCAL_ANSIBLE_PROVISION_DIR, destination: REMOTE_ANSIBLE_PROVISIONING_PATH
 #     config.vm.provision "file", source: LOCAL_CP_ANSIBLE_DIR, destination: REMOTE_CP_ANSIBLE_DIR
     config.vm.define server[:hostname] do |conf|
-      conf.vm.hostname = server[:hostname]
-      # Host only network config
-      net_config_hostonly = {}
-      if server[:hostonly_ip] != "dhcp"
-        net_config_hostonly[:ip] = server[:hostonly_ip]
-        net_config_hostonly[:netmask] = server[:netmask] || "255.255.255.0"
-      else
-        net_config_hostonly[:type] = "dhcp"
-      end
-      conf.vm.network "private_network", net_config_hostonly
-
-      # Bridged network config
-      net_config_bridged = {}
-      net_config_bridged[:bridge] = server[:bridged_adapter]
-      if server[:bridged_ip] != "dhcp"
-        net_config_bridged[:ip] = server[:bridged_ip]
-        net_config_bridged[:netmask] = server[:netmask] || "255.255.255.0"
-      else
-        net_config_bridged[:type] = "dhcp"
-      end
-      conf.vm.network "public_network", net_config_bridged
+#       conf.vm.hostname = server[:hostname]
+#       # Host only network config
+#       net_config_hostonly = {}
+#       if server[:hostonly_ip] != "dhcp"
+#         net_config_hostonly[:ip] = server[:hostonly_ip]
+#         net_config_hostonly[:netmask] = server[:netmask] || "255.255.255.0"
+#       else
+#         net_config_hostonly[:type] = "dhcp"
+#       end
+#       conf.vm.network "private_network", net_config_hostonly
+#
+#       # Bridged network config
+#       net_config_bridged = {}
+#       net_config_bridged[:bridge] = server[:bridged_adapter]
+#       if server[:bridged_ip] != "dhcp"
+#         net_config_bridged[:ip] = server[:bridged_ip]
+#         net_config_bridged[:netmask] = server[:netmask] || "255.255.255.0"
+#       else
+#         net_config_bridged[:type] = "dhcp"
+#       end
+#       conf.vm.network "public_network", net_config_bridged
 
       # Configure the machine CPU and memory
       cpu = server[:cpu] ? server[:cpu] : 1;
