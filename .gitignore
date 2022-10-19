@@ -2,3 +2,6 @@
 cp-ansible
 .idea/
 /.env
+.build-harness
+build-harness
+test.log

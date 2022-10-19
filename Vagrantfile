@@ -12,12 +12,11 @@ ssh_key = "~/.ssh/id_rsa"
 # List of Confluent servers
 # NOTE: in reverse order to run ansible from the last node in the servers list
 servers = [
-  { :hostname => "cp01.oso.sh", :hostonly_ip => "192.168.56.71", :bridged_ip => "192.168.1.71", :bridged_adapter=> "eno1", :ram => 6144, :cpu => 2}
+  { :hostname => "cp01", :hostonly_ip => "192.168.168.71", :bridged_ip => "192.168.1.71", :bridged_adapter=> "eno1", :ram => 6144, :cpu => 2}
 ]
 
 
 Vagrant.configure(2) do |config|
-
   config.vm.box = "generic/fedora36"
   config.vm.network "forwarded_port", guest: 9021, host: 9999
   config.vm.network "forwarded_port", guest: 8080, host: 8080
