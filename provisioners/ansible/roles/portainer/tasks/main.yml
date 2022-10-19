@@ -10,7 +10,4 @@
       - /run/docker.sock:/var/run/docker.sock:ro
     ports:
       - "9000:9000"
-#    env:
-#      VAULT_ADDR: "http://127.0.0.1:8200"
-#    entrypoint: vault server -config /vault/config/config.hcl
   become: true
