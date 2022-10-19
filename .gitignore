@@ -5,3 +5,4 @@ cp-ansible
 .build-harness
 build-harness
 test.log
+./provisioners/vault/*
