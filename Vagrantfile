@@ -1,11 +1,9 @@
 # absolute path to Ansible directory on virtual machine
 ANSIBLE_PATH_ON_VM = File.join('/home/vagrant/ansible')
-LOCAL_ANSIBLE_PROVISION_DIR = './provisioners'
+LOCAL_ANSIBLE_PROVISION_DIR = '/home/mccullya/Projects/oso/vagrant-confluent-platform/provisioners'
 REMOTE_ANSIBLE_PROVISIONING_PATH = '/home/vagrant/provisioners'
-LOCAL_CP_ANSIBLE_DIR = './cp-ansible'
+LOCAL_CP_ANSIBLE_DIR = '/home/mccullya/Projects/oso/vagrant-confluent-platform/cp-ansible'
 REMOTE_CP_ANSIBLE_DIR = '/home/vagrant/cp-ansible'
-RHEL_SUBSCRIPTION_MANAGER_USERNAME = 'sionsmith' # RHEL Developer username here
-RHEL_SUBSCRIPTION_MANAGER_PASSWORD = '' # RHEL Developer password here
 # cp-ansible inventory file to install
 CP_ANSIBLE_INSTALL_INVENTORY_PATH = 'inventory/group_vars/1node.yml'
 
@@ -14,15 +12,17 @@ ssh_key = "~/.ssh/id_rsa"
 # List of Confluent servers
 # NOTE: in reverse order to run ansible from the last node in the servers list
 servers = [
-  { :hostname => "cp01", :hostonly_ip => "192.168.56.71", :bridged_ip => "192.168.1.71", :bridged_adapter=> "eno1", :ram => 6144, :cpu => 2}
+  { :hostname => "cp01.oso.sh", :hostonly_ip => "192.168.56.71", :bridged_ip => "192.168.1.71", :bridged_adapter=> "eno1", :ram => 6144, :cpu => 2}
 ]
 
 
 Vagrant.configure(2) do |config|
 
-  config.vm.box = "generic/rhel8"
+  config.vm.box = "generic/fedora36"
   config.vm.network "forwarded_port", guest: 9021, host: 9999
   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8200, host: 8200
+  config.vm.network "forwarded_port", guest: 9000, host: 9000
 #   config.vm.box = "roboxes/rhel7"
   if Vagrant.has_plugin?("vagrant-hostmanager")
     config.hostmanager.enabled = true
@@ -34,6 +34,7 @@ Vagrant.configure(2) do |config|
   # Configure the servers
   servers.each_with_index do |server, index|
     config.vm.provision "file", source: LOCAL_ANSIBLE_PROVISION_DIR, destination: REMOTE_ANSIBLE_PROVISIONING_PATH
+#     config.vm.provision "file", source: LOCAL_CP_ANSIBLE_DIR, destination: REMOTE_CP_ANSIBLE_DIR
     config.vm.define server[:hostname] do |conf|
       conf.vm.hostname = server[:hostname]
       # Host only network config
@@ -63,8 +64,6 @@ Vagrant.configure(2) do |config|
       conf.vm.provider "virtualbox" do |vb|
         vb.customize ["modifyvm", :id, "--cpus", cpu.to_s]
         vb.customize ["modifyvm", :id, "--memory", memory.to_s]
-        #vb.customize ["modifyvm", :id, "--nictrace1", "on"]
-        #vb.customize ["modifyvm", :id, "--nictracefile1", "dump.pcap"]
         vb.name = server[:hostname] + "_" + server[:bridged_ip]
       end
 
@@ -87,17 +86,20 @@ Vagrant.configure(2) do |config|
 
       # PROVISIONERS
       # Create hosts file on all the servers
-      #conf.vm.provision :shell, inline: "export SSLKEYLOGFILE=/home/vagrant/sslkeylogfile"
+      conf.vm.provision :shell, inline: "export SSLKEYLOGFILE=/home/vagrant/sslkeylogfile"
       conf.vm.provision :shell, inline: "sudo echo #{server[:hostonly_ip]} #{server[:hostname]} | sudo tee -a /etc/hosts"
-
+      conf.vm.provision :shell, inline: "sudo echo '127.0.0.1 kafka.cp01.oso.sh' >> /etc/hosts"
+      conf.vm.provision :shell, inline: "sudo echo '127.0.0.1 zk.cp01.oso.sh' >> /etc/hosts"
+      conf.vm.provision :shell, inline: "sudo echo '127.0.0.1 c3.cp01.oso.sh' >> /etc/hosts"
       # Remove 127.0.0.1 <hostname> from /etc/hosts to allow correct IP lookup
       conf.vm.provision :shell, inline: "sed -i'' '/^127.0.0.1\\t#{conf.vm.hostname}\\t#{conf.vm.hostname}$/d' /etc/hosts"
       conf.vm.provision :shell, :path => "./provisioners/scripts/package_update.sh", env: {"USERNAME"=>RHEL_SUBSCRIPTION_MANAGER_USERNAME, "PASSWORD"=>RHEL_SUBSCRIPTION_MANAGER_PASSWORD}
       conf.vm.provision :shell, :path => "./provisioners/scripts/install_python3.sh"
-      # conf.vm.provision :shell, :path => "./provisioners/scripts/install_docker.sh"
-      # conf.vm.provision :shell, :path => "./provisioners/scripts/install_ansible.sh"
-      # conf.vm.provision :shell, :path => "./provisioners/scripts/install_ldap_docker.sh"
-#       conf.vm.provision :shell, :path => "./provisioners/scripts/install_clamav.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
+      conf.vm.provision :shell, :path => "./provisioners/scripts/install_docker.sh"
+      conf.vm.provision :shell, :path => "./provisioners/scripts/install_ansible.sh"
+#       conf.vm.provision :shell, :path => "./provisioners/scripts/install_ldap_docker.sh"
+      conf.vm.provision :shell, :path => "./provisioners/scripts/install_vault_docker.sh"
+      conf.vm.provision :shell, :path => "./provisioners/scripts/install_confluent_platform.sh"
 #       conf.vm.provision :shell, :path => "./provisioners/scripts/install_confluent_platform.sh", env: {"TEMPLATE"=>CP_ANSIBLE_INSTALL_INVENTORY_PATH, "INVENTORY_PATH"=>REMOTE_ANSIBLE_PROVISIONING_PATH}
     end
   end

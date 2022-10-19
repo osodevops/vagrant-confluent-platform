@@ -1,0 +1,74 @@
+---
+- name: gen certs
+  hosts: localhost
+  vars:
+    VAULT_ADDR: "http://localhost:8200"
+    VAULT_DEV_ROOT_TOKEN_ID: "vault-plaintext-root-token"
+    VAULT_TOKEN: "vault-plaintext-root-token"
+  tasks:
+    - name: install hvac pip package
+      become: yes
+      become_method: sudo
+      pip:
+        name: hvac
+        state: present
+    - name: Generate Kafka certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: kafka.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - kafka1.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: kafka_cert_data
+    - name: Generate Zookeeper certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: zk.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - zk.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: zk_cert_data
+    - name: Generate C3 certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: c3.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - c3.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: c3_cert_data
+    - name: save kakfa cert
+      copy: content="{{ kafka_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/kafka.pem
+    - name: save kakfa key
+      copy: content="{{ kafka_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/kafka-key.pem
+    - name: save kakfa issuing ca
+      copy: content="{{ kafka_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/kafka-issuing-ca.pem
+    - name: save c3 cert
+      copy: content="{{ c3_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/c3.pem
+    - name: save c3 key
+      copy: content="{{ c3_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/c3-key.pem
+    - name: save c3 issuing ca
+      copy: content="{{ c3_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/c3-issuing-ca.pem
+    - name: save zk cert
+      copy: content="{{ zk_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/zk.pem
+    - name: save zk key
+      copy: content="{{ zk_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/zk-key.pem
+    - name: save zk issuing ca
+      copy: content="{{ zk_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/zk-issuing-ca.pem

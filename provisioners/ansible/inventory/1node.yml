@@ -2,6 +2,10 @@
 # For all configuration variables see: roles/confluent.variables/defaults/main.yml
 all:
   vars:
+    mask_secrets: false
+    ssl_custom_certs: true
+    ssl_custom_certs_remote_src: true
+    validate_hosts: false.
     ansible_connection: ssh
     ansible_user: root
     ansible_become: true
@@ -9,8 +13,7 @@ all:
     sasl_protocol: plain
     ssl_enabled: true
     ssl_mutual_auth_enabled: false
-    rbac_enabled: true
-#    as per: https://docs.confluent.io/ansible/current/ansible-authorize.html
+    rbac_enabled: false
     mds_super_user: svc-D-KAFKA-C3
     mds_super_user_password: admin123
     kafka_broker_ldap_user: svc-D-KAFKA-C3
@@ -49,7 +52,12 @@ all:
 
 # Node configuration
 kafka_broker:
+  hosts:
+    kafka.cp01.oso.sh:
   vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kafka.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kafka-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kafka-issuing-ca.pem
     kafka_broker_custom_properties:
 #      authorizer.class.name: io.confluent.kafka.security.ldap.authorizer.LdapAuthorizer
       ldap.java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
@@ -65,26 +73,31 @@ kafka_broker:
       ldap.user.object.class: inetOrgPerson
 #      super.users: User:admin;User:mds
 
-  hosts:
-    cp01:
-
 # Node configuration
 zookeeper:
   hosts:
-    cp01:
-schema_registry:
-  hosts:
-    cp01:
+    zk.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/zk.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/zk-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/zk-issuing-ca.pem
+#schema_registry:
+#  hosts:
+#    cp01.oso.sh:
 control_center:
   hosts:
-    cp01:
-kafka_connect:
-  hosts:
-    cp01:
-kafka_rest:
-  hosts:
-    cp01:
-ksql:
-  hosts:
-    cp01:
+    c3.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/c3.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/c3-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/c3-issuing-ca.pem
+#kafka_connect:
+#  hosts:
+#    cp01.oso.sh:
+#kafka_rest:
+#  hosts:
+#    cp01.oso.sh:
+#ksql:
+#  hosts:
+#    cp01.oso.sh:
 
