@@ -4,13 +4,14 @@ all:
   vars:
     environment_id: local-dev
     application_insights_instrumentation_key: 02e1b132-23f8-490d-a339-2aad9d85633f
-    zookeeper_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    kafka_broker_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    kafka_rest_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    kafka_connect_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    schema_registry_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    ksql_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
-    control_center_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    # Commenting this out, as it fails because the file is not present
+#    zookeeper_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_broker_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_rest_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_connect_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    schema_registry_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    ksql_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    control_center_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
     # Vault integration
     mask_secrets: false
     ssl_custom_certs: true
