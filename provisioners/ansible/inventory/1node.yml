@@ -92,9 +92,13 @@ zookeeper:
     ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/zk.pem
     ssl_key_filepath: /home/vagrant/provisioners/vault/zk-key.pem
     ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/zk-issuing-ca.pem
-#schema_registry:
-#  hosts:
-#    cp01.oso.sh:
+schema_registry:
+  hosts:
+    sr.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/sr.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/sr-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/sr-issuing-ca.pem
 control_center:
   hosts:
     c3.cp01.oso.sh:
@@ -102,13 +106,24 @@ control_center:
     ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/c3.pem
     ssl_key_filepath: /home/vagrant/provisioners/vault/c3-key.pem
     ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/c3-issuing-ca.pem
-#kafka_connect:
-#  hosts:
-#    cp01.oso.sh:
-#kafka_rest:
-#  hosts:
-#    cp01.oso.sh:
-#ksql:
-#  hosts:
-#    cp01.oso.sh:
-
+kafka_connect:
+  hosts:
+    kc.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kc.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kc-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kc-issuing-ca.pem
+kafka_rest:
+  hosts:
+    kr.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kr.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kr-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kr-issuing-ca.pem
+ksql:
+  hosts:
+    ksql.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/ksql.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/ksql-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/ksql-issuing-ca.pem

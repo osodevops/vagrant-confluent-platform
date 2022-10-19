@@ -12,6 +12,7 @@
       pip:
         name: hvac
         state: present
+
     - name: Generate Kafka certificate with an existing token
       community.hashi_vault.vault_pki_generate_certificate:
         role_name: oso-dot-sh
@@ -26,6 +27,7 @@
         token: "vault-plaintext-root-token"
         validate_certs: true
       register: kafka_cert_data
+
     - name: Generate Zookeeper certificate with an existing token
       community.hashi_vault.vault_pki_generate_certificate:
         role_name: oso-dot-sh
@@ -40,6 +42,22 @@
         token: "vault-plaintext-root-token"
         validate_certs: true
       register: zk_cert_data
+
+    - name: Generate Schema Registry certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: sr.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - sr.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: sr_cert_data
+
     - name: Generate C3 certificate with an existing token
       community.hashi_vault.vault_pki_generate_certificate:
         role_name: oso-dot-sh
@@ -54,21 +72,97 @@
         token: "vault-plaintext-root-token"
         validate_certs: true
       register: c3_cert_data
-    - name: save kakfa cert
+
+    - name: Generate Kafka Connect certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: kc.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - kc.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: kc_cert_data
+
+    - name: Generate Kafka Rest certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: kr.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - kr.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: kr_cert_data
+
+    - name: Generate KSQL certificate with an existing token
+      community.hashi_vault.vault_pki_generate_certificate:
+        role_name: oso-dot-sh
+        common_name: ksql.cp01.oso.sh
+        format: pem
+        engine_mount_point: pki_int
+        ttl: 8760h
+        alt_names:
+          - ksql.cp01.oso.sh
+        url: http://localhost:8200
+        auth_method: token
+        token: "vault-plaintext-root-token"
+        validate_certs: true
+      register: ksql_cert_data
+
+    - name: save kafka cert
       copy: content="{{ kafka_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/kafka.pem
-    - name: save kakfa key
+    - name: save kafka key
       copy: content="{{ kafka_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/kafka-key.pem
-    - name: save kakfa issuing ca
+    - name: save kafka issuing ca
       copy: content="{{ kafka_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/kafka-issuing-ca.pem
-    - name: save c3 cert
-      copy: content="{{ c3_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/c3.pem
-    - name: save c3 key
-      copy: content="{{ c3_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/c3-key.pem
-    - name: save c3 issuing ca
-      copy: content="{{ c3_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/c3-issuing-ca.pem
+
     - name: save zk cert
       copy: content="{{ zk_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/zk.pem
     - name: save zk key
       copy: content="{{ zk_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/zk-key.pem
     - name: save zk issuing ca
       copy: content="{{ zk_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/zk-issuing-ca.pem
+
+    - name: save sr cert
+      copy: content="{{ sr_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/sr.pem
+    - name: save sr key
+      copy: content="{{ sr_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/sr-key.pem
+    - name: save sr issuing ca
+      copy: content="{{ sr_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/sr-issuing-ca.pem
+
+    - name: save c3 cert
+      copy: content="{{ c3_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/c3.pem
+    - name: save c3 key
+      copy: content="{{ c3_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/c3-key.pem
+    - name: save c3 issuing ca
+      copy: content="{{ c3_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/c3-issuing-ca.pem
+
+    - name: save kc cert
+      copy: content="{{ kc_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/kc.pem
+    - name: save kc key
+      copy: content="{{ kc_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/kc-key.pem
+    - name: save kc issuing ca
+      copy: content="{{ kc_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/kc-issuing-ca.pem
+
+    - name: save kr cert
+      copy: content="{{ kr_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/kr.pem
+    - name: save kr key
+      copy: content="{{ kr_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/kr-key.pem
+    - name: save kr issuing ca
+      copy: content="{{ kr_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/kr-issuing-ca.pem
+
+    - name: save ksql cert
+      copy: content="{{ ksql_cert_data.data.data.certificate }}" dest=/home/vagrant/provisioners/vault/ksql.pem
+    - name: save ksql key
+      copy: content="{{ ksql_cert_data.data.data.private_key }}" dest=/home/vagrant/provisioners/vault/ksql-key.pem
+    - name: save ksql issuing ca
+      copy: content="{{ ksql_cert_data.data.data.issuing_ca }}" dest=/home/vagrant/provisioners/vault/ksql-issuing-ca.pem
