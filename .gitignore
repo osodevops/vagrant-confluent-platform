@@ -1,13 +1,10 @@
-# Compiled files
-*.tfstate
-*.tfstate.backup
-
-# Module directory
-.terraform
-.idea
-*.iml
-
+.vagrant/
+cp-ansible
+.idea/
+/.env
 .build-harness
 build-harness
-
 test.log
+*.pem
+*.crt
+*.csr

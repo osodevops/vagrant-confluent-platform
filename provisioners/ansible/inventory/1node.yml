@@ -1,0 +1,130 @@
+# 1 node Confluent Platform deployment
+# For all configuration variables see: roles/confluent.variables/defaults/main.yml
+all:
+  vars:
+    environment_id: local-dev
+    application_insights_instrumentation_key: 02e1b132-23f8-490d-a339-2aad9d85633f
+    # Commenting this out, as it fails because the file is not present
+#    zookeeper_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_broker_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_rest_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    kafka_connect_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    schema_registry_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    ksql_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+#    control_center_custom_java_args: -javaagent:/usr/share/jmx_exporter/applicationinsights-agent-3.0.2.jar
+    # Vault integration
+    mask_secrets: false
+    ssl_custom_certs: true
+    ssl_custom_certs_remote_src: true
+    validate_hosts: false.
+    # End of Vault Integration
+    ansible_connection: ssh
+    ansible_user: root
+    ansible_become: true
+    health_checks_enabled: false
+    sasl_protocol: plain
+    ssl_enabled: true
+    ssl_mutual_auth_enabled: false
+    # LDAP Integration
+    rbac_enabled: false
+    mds_super_user: svc-D-KAFKA-C3
+    mds_super_user_password: admin123
+    kafka_broker_ldap_user: svc-D-KAFKA-C3
+    kafka_broker_ldap_password: admin123
+    schema_registry_ldap_user: svc-D-KAFKA-C3
+    schema_registry_ldap_password: admin123
+    kafka_connect_ldap_user: svc-D-KAFKA-C3
+    kafka_connect_ldap_password: admin123
+    ksql_ldap_user: svc-D-KAFKA-C3
+    ksql_ldap_password: admin123
+    kafka_rest_ldap_user: svc-D-KAFKA-C3
+    kafka_rest_ldap_password: admin123
+    control_center_ldap_user: svc-D-KAFKA-C3
+    control_center_ldap_password: admin123
+    zookeeper_sasl_protocol: none
+    zookeeper_ssl_enabled: true
+    zookeeper_ssl_mutual_auth_enabled: false
+    confluent_cli_download_enabled: true
+    jmxexporter_enabled: true
+    jmxexporter_jar_url: https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.0.2/applicationinsights-agent-3.0.2.jar
+    confluent:
+      support:
+        metrics_enabled: false
+#    as per: https://docs.confluent.io/platform/current/security/ldap-authorizer/quickstart.html
+    sasl_plain_users:
+      admin:
+        principal: admin
+        password: admin123
+
+    # For debugging purposes, allow Zookeeper to respond to 4lw commands. Not recommended for production.
+    zookeeper:
+      properties:
+        4lw.commands.whitelist: stat, ruok, conf, isro, cons, dump, crst, envi, srst, srvr, wchc, wchp, mntr
+
+# Node configuration
+kafka_broker:
+  hosts:
+    kafka.cp01.oso.sh:
+  vars:
+    # Vault Integration
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kafka.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kafka-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kafka-issuing-ca.pem
+    # End of Vault Integration
+    kafka_broker_custom_properties:
+#      authorizer.class.name: io.confluent.kafka.security.ldap.authorizer.LdapAuthorizer
+      ldap.java.naming.factory.initial: com.sun.jndi.ldap.LdapCtxFactory
+      ldap.com.sun.jndi.ldap.read.timeout: 3000
+      ldap.java.naming.provider.url: ldap://0.0.0.0:389
+      ldap.java.naming.security.principal: cn=admin,dc=dead,dc=hq,dc=dept
+      ldap.java.naming.security.credentials: admin123
+      ldap.java.naming.security.authentication: simple
+      ldap.user.search.base: ou=DFE,ou=Administrators,dc=dead,dc=hq,dc=dept
+      ldap.search.mode: USERS
+      ldap.user.search.scope: 2
+      ldap.user.name.attribute: cn
+      ldap.user.object.class: inetOrgPerson
+#      super.users: User:admin;User:mds
+# Node configuration
+zookeeper:
+  hosts:
+    zk.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/zk.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/zk-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/zk-issuing-ca.pem
+schema_registry:
+  hosts:
+    sr.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/sr.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/sr-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/sr-issuing-ca.pem
+control_center:
+  hosts:
+    c3.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/c3.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/c3-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/c3-issuing-ca.pem
+kafka_connect:
+  hosts:
+    kc.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kc.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kc-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kc-issuing-ca.pem
+kafka_rest:
+  hosts:
+    kr.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/kr.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/kr-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/kr-issuing-ca.pem
+ksql:
+  hosts:
+    ksql.cp01.oso.sh:
+  vars:
+    ssl_signed_cert_filepath: /home/vagrant/provisioners/vault/ksql.pem
+    ssl_key_filepath: /home/vagrant/provisioners/vault/ksql-key.pem
+    ssl_ca_cert_filepath: /home/vagrant/provisioners/vault/ksql-issuing-ca.pem

@@ -1,0 +1,15 @@
+---
+- name: Install Vault Docker
+  docker_container:
+    image: vault:latest
+    name: vault
+    privileged: yes
+    restart_policy: always
+    state: started
+    ports:
+      - "8200:8200"
+    env:
+      VAULT_ADDR: "http://localhost:8200"
+      VAULT_DEV_ROOT_TOKEN_ID: "vault-plaintext-root-token"
+      VAULT_TOKEN: "vault-plaintext-root-token"
+  become: true
